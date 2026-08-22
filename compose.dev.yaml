@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo:7.0
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - pb-dev-mongo:/data/db
+
+  pb:
+    build: .
+    command: sh -ec 'python3 -m pb.runonce && exec python3 /app/run.py'
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "10002:10002"
+    volumes:
+      - ./config.dev.yaml:/root/.config/pb/config.yaml:ro
+      - ./pb/paste/handler.py:/app/pb/paste/handler.py:ro
+      - ./pb/templates:/app/pb/templates:ro
+      - ./pb/util.py:/app/pb/util.py:ro
+      - ./run.py:/app/run.py:ro
+
+volumes:
+  pb-dev-mongo:
