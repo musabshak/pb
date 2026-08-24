@@ -10,7 +10,17 @@
 {% else %}
 {{ super() }}
 {% endif %}
+{% if document == 'markdown' %}
+<link href="{{ cdn_prefix }}{{ url_for('static', filename='css/markdown.css') }}" type="text/css"
+      rel="stylesheet"/>
+{% endif %}
 {% endblock %}
 {% block body %}
+{% if document == 'markdown' %}
+<article class="markdown-body">
 {{ content | safe }}
+</article>
+{% else %}
+{{ content | safe }}
+{% endif %}
 {% endblock %}
