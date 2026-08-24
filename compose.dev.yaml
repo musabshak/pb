@@ -20,6 +20,7 @@ services:
     volumes:
       - ./config.dev.yaml:/root/.config/pb/config.yaml:ro
       - ./pb/paste/handler.py:/app/pb/paste/handler.py:ro
+      - ./pb/static/css/markdown.css:/app/pb/static/css/markdown.css:ro
       - ./pb/templates:/app/pb/templates:ro
       - ./pb/util.py:/app/pb/util.py:ro
       - ./run.py:/app/run.py:ro

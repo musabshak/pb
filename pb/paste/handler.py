@@ -29,7 +29,14 @@ def render(content, mimetype, partial=False, **kwargs):
     renderer = mimetypes.get(mimetype, rst)
     content = renderer(content)
     if not partial:
-        content = render_template("generic.html", cc='container-fluid', content=content, **style_args())
+        document = 'markdown' if mimetype == 'text/x-markdown' else None
+        content = render_template(
+            "generic.html",
+            cc='container-fluid',
+            content=content,
+            document=document,
+            **style_args()
+        )
     return content
 
 handlers = {
